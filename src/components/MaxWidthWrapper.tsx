@@ -1,11 +1,11 @@
-import { ReactNode } from 'react';
 import { cn } from '@/lib/utils';
+import { ReactNode } from 'react';
 
 const MaxWidthWrapper = ({
   className,
   children,
 }: {
-  className?: 'string';
+  className?: string;
   children: ReactNode;
 }) => {
   return (
