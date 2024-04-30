@@ -12,7 +12,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import {
   AuthCredentialsValidator,
   TAuthCredentialsValidator,
-} from '@/lib/validators/account-credentials-validators';
+} from '../../../lib/validators/account-credentials-validators';
 import { trpc } from '@/trpc/client';
 
 const Page = () => {
@@ -25,8 +25,8 @@ const Page = () => {
     resolver: zodResolver(AuthCredentialsValidator),
   });
 
-  const { data } = trpc.anyApiRoute.useQuery();
-  console.log(data);
+  // const { data } = trpc.anyApiRoute.useQuery();
+  // console.log(data);
 
   const onSubmit = ({ email, password }: TAuthCredentialsValidator) => {
     // Send data to the server
