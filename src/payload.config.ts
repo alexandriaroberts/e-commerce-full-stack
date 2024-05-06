@@ -19,7 +19,7 @@ export default buildConfig({
     bundler: webpackBundler(),
     meta: {
       titleSuffix: 'Digital Products',
-      favicon: '/favicon.ico',
+      // favicon: '/favicon.ico',
       ogImage: '/thumbnail.jpg',
     },
   },
