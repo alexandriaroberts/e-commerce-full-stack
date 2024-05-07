@@ -14,6 +14,8 @@ import {
   TAuthCredentialsValidator,
 } from '../../../lib/validators/account-credentials-validators';
 import { trpc } from '@/trpc/client';
+import { toast } from 'sonner';
+import { ZodError } from 'zod';
 
 const Page = () => {
   // Resolver is a custom schema validation
@@ -25,7 +27,16 @@ const Page = () => {
     resolver: zodResolver(AuthCredentialsValidator),
   });
 
-  const { mutate } = trpc.auth.createPayloadUser.useMutation({});
+  const { mutate, isLoading } = trpc.auth.createPayloadUser.useMutation({
+    onError: (err) => {
+      if (err.data?.code === 'CONFLICT') {
+        toast.error('This email is already in use. Sign in instead?');
+      }
+
+      if (err instanceof ZodError) {
+      }
+    },
+  });
 
   const onSubmit = ({ email, password }: TAuthCredentialsValidator) => {
     // Send data to the server
