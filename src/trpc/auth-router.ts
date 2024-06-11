@@ -5,6 +5,7 @@ import { publicProcedure, router } from './trpc';
 import { getPayloadClient } from '../get-payload';
 import { TRPCError } from '@trpc/server/unstable-core-do-not-import';
 import { z } from 'zod';
+import payload from 'payload';
 
 export const authRouter = router({
   // Create a user
@@ -56,5 +57,26 @@ export const authRouter = router({
       if (!isVerified) throw new TRPCError({ code: 'UNAUTHORIZED' });
 
       return { success: true };
+    }),
+
+  // Anyone should be able to call it that's why publicProcedure
+  // Mutation for handling business logic
+  signIn: publicProcedure
+    .input(AuthCredentialsValidator)
+    .mutation(async ({ input, ctx }) => {
+      const { email, password } = input;
+      const { res } = ctx;
+
+      const payload = await getPayloadClient();
+
+      try {
+        await payload.login({
+          collection: 'users',
+          data: { email, password },
+          res,
+        });
+      } catch (err) {
+        throw new TRPCError({ code: 'UNAUTHORIZED' });
+      }
     }),
 });
